@@ -31,34 +31,7 @@
                 }
                 else if (command == "load")
                 {
-                    if(argument.Length == 2)
-                    {
-                        using (StreamReader sr = new StreamReader(argument[1]))
-                        {
-                            dictionary = new List<SweEngGloss>(); // Empty it!
-                            string line = sr.ReadLine();
-                            while (line != null)
-                            {
-                                SweEngGloss gloss = new SweEngGloss(line);
-                                dictionary.Add(gloss);
-                                line = sr.ReadLine();
-                            }
-                        }
-                    }
-                    else if(argument.Length == 1)
-                    {
-                        using (StreamReader sr = new StreamReader(defaultFile))
-                        {
-                            dictionary = new List<SweEngGloss>(); // Empty it!
-                            string line = sr.ReadLine();
-                            while (line != null)
-                            {
-                                SweEngGloss gloss = new SweEngGloss(line);
-                                dictionary.Add(gloss);
-                                line = sr.ReadLine();
-                            }
-                        }
-                    }
+                    load(defaultFile, argument);
                 }
                 else if (command == "list")
                 {
@@ -121,29 +94,61 @@
             }
             while (true);
 
-            static void translate(string[] argument)
+            
+        }
+        static void translate(string[] argument)
+        {
+            if (argument.Length == 2)
             {
-                if (argument.Length == 2)
+                string s = argument[1];
+                foreach (SweEngGloss gloss in dictionary)
                 {
-                    string s = argument[1];
-                    foreach (SweEngGloss gloss in dictionary)
+                    if (gloss.word_swe == s)
+                        Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
+                    if (gloss.word_eng == s)
+                        Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
+                }
+            }
+            else if (argument.Length == 1)
+            {
+                Console.WriteLine("Write word to be translated: ");
+                string s = Console.ReadLine();
+                foreach (SweEngGloss gloss in dictionary)
+                {
+                    if (gloss.word_swe == s)
+                        Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
+                    if (gloss.word_eng == s)
+                        Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
+                }
+            }
+        }
+        private static void load(string defaultFile, string[] argument)
+        {
+            if (argument.Length == 2)
+            {
+                using (StreamReader sr = new StreamReader(argument[1]))
+                {
+                    dictionary = new List<SweEngGloss>(); // Empty it!
+                    string line = sr.ReadLine();
+                    while (line != null)
                     {
-                        if (gloss.word_swe == s)
-                            Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
-                        if (gloss.word_eng == s)
-                            Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
+                        SweEngGloss gloss = new SweEngGloss(line);
+                        dictionary.Add(gloss);
+                        line = sr.ReadLine();
                     }
                 }
-                else if (argument.Length == 1)
+            }
+            else if (argument.Length == 1)
+            {
+                using (StreamReader sr = new StreamReader(defaultFile))
                 {
-                    Console.WriteLine("Write word to be translated: ");
-                    string s = Console.ReadLine();
-                    foreach (SweEngGloss gloss in dictionary)
+                    dictionary = new List<SweEngGloss>(); // Empty it!
+                    string line = sr.ReadLine();
+                    while (line != null)
                     {
-                        if (gloss.word_swe == s)
-                            Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
-                        if (gloss.word_eng == s)
-                            Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
+                        SweEngGloss gloss = new SweEngGloss(line);
+                        dictionary.Add(gloss);
+                        line = sr.ReadLine();
                     }
                 }
             }
