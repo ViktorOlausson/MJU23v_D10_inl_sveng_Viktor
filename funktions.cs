@@ -32,7 +32,7 @@ namespace MJU23v_D10_inl_sveng
                 this.word_swe = words[0]; this.word_eng = words[1];
             }
         }
-        public static void translate(string[] argument)
+        public static void translate(string[] argument)//TODO: inget händer om ordet inte finns
         {
             if (!isLoaded)
             {
@@ -64,6 +64,23 @@ namespace MJU23v_D10_inl_sveng
                     }
                 }
             }
+            
+        }
+
+        public static void list()
+        {
+            if (!isLoaded)
+            {
+                Console.WriteLine("No data has been loaded, please run load command first");
+            }
+            else
+            {
+                foreach (SweEngGloss gloss in dictionary)//FIXME: Kastar error om inget är laddat
+                {
+                    Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
+                }
+            }
+
             
         }
 
@@ -142,7 +159,7 @@ namespace MJU23v_D10_inl_sveng
                         Console.Write("Write word in English: ");
                         string english = Console.ReadLine().ToLower();
                         int index = -1;
-                        for (int i = 0; i < dictionary.Count; i++)//FIXME: Kastar error om inget är laddat
+                        for (int i = 0; i < dictionary.Count; i++)
                         {
                             SweEngGloss gloss = dictionary[i];
                             if (gloss.word_swe == swedish && gloss.word_eng == english)
@@ -179,7 +196,7 @@ namespace MJU23v_D10_inl_sveng
                     string swedish = Console.ReadLine().ToLower();
                     Console.Write("Write word in English: ");
                     string english = Console.ReadLine().ToLower();
-                    dictionary.Add(new SweEngGloss(swedish, english));//FIXME: kastar error om inget är laddat
+                    dictionary.Add(new SweEngGloss(swedish, english));
                 }
             }
             

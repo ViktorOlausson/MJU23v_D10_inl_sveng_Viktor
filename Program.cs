@@ -23,10 +23,7 @@
                 }
                 else if (command.ToLower() == "list")
                 {
-                    foreach(funktions.SweEngGloss gloss in funktions.dictionary)//FIXME: Kastar error om inget är laddat
-                    {
-                        Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
-                    }
+                    funktions.list();
                 }
                 else if (command.ToLower() == "new")//TODO: lägga till save för att spara nya
                 {
@@ -46,11 +43,6 @@
                 }
             }
             while (true);
-
-            
         }
-        
-
-        
     }
 }
