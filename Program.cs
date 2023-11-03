@@ -42,48 +42,13 @@
                 }
                 else if (command == "new")//TODO: lägga till save för att spara nya
                 {
-                    if (argument.Length == 3)
-                    {
-                        dictionary.Add(new SweEngGloss(argument[1], argument[2]));
-                    }
-                    else if(argument.Length == 1)
-                    {
-                        Console.WriteLine("Write word in Swedish: ");
-                        string s = Console.ReadLine();
-                        Console.Write("Write word in English: ");
-                        string e = Console.ReadLine();
-                        dictionary.Add(new SweEngGloss(s, e));
-                    }
+                    New(argument);
                 }
                 else if (command == "delete")//TODO: lägga till save för spara om något ändrats
                 {
-                    if (argument.Length == 3)
-                    {
-                        int index = -1;
-                        for (int i = 0; i < dictionary.Count; i++) {
-                            SweEngGloss gloss = dictionary[i];
-                            if (gloss.word_swe == argument[1] && gloss.word_eng == argument[2])
-                                index = i;
-                        }
-                        dictionary.RemoveAt(index);
-                    }
-                    else if (argument.Length == 1)
-                    {
-                        Console.WriteLine("Write word in Swedish: ");
-                        string s = Console.ReadLine();
-                        Console.Write("Write word in English: ");
-                        string e = Console.ReadLine();
-                        int index = -1;
-                        for (int i = 0; i < dictionary.Count; i++)
-                        {
-                            SweEngGloss gloss = dictionary[i];
-                            if (gloss.word_swe == s && gloss.word_eng == e)
-                                index = i;
-                        }
-                        dictionary.RemoveAt(index);
-                    }
+                    Delete(argument);
                 }
-                else if (command == "translate")//TODO: inget händer om ordet inte
+                else if (command == "translate")//TODO: inget händer om ordet inte finns
                 {
                     translate(argument);
                 }
@@ -122,6 +87,7 @@
                 }
             }
         }
+
         private static void load(string defaultFile, string[] argument)
         {
             if (argument.Length == 2)
@@ -151,6 +117,52 @@
                         line = sr.ReadLine();
                     }
                 }
+            }
+        }
+
+        static void Delete(string[] argument)
+        {
+            if (argument.Length == 3)
+            {
+                int index = -1;
+                for (int i = 0; i < dictionary.Count; i++)
+                {
+                    SweEngGloss gloss = dictionary[i];
+                    if (gloss.word_swe == argument[1] && gloss.word_eng == argument[2])
+                        index = i;
+                }
+                dictionary.RemoveAt(index);
+            }
+            else if (argument.Length == 1)
+            {
+                Console.WriteLine("Write word in Swedish: ");
+                string s = Console.ReadLine();
+                Console.Write("Write word in English: ");
+                string e = Console.ReadLine();
+                int index = -1;
+                for (int i = 0; i < dictionary.Count; i++)
+                {
+                    SweEngGloss gloss = dictionary[i];
+                    if (gloss.word_swe == s && gloss.word_eng == e)
+                        index = i;
+                }
+                dictionary.RemoveAt(index);//FIXME: kastar error om fel stavning
+            }
+        }
+
+        static void New(string[] argument)
+        {
+            if (argument.Length == 3)
+            {
+                dictionary.Add(new SweEngGloss(argument[1], argument[2]));
+            }
+            else if (argument.Length == 1)
+            {
+                Console.WriteLine("Write word in Swedish: ");
+                string s = Console.ReadLine();
+                Console.Write("Write word in English: ");
+                string e = Console.ReadLine();
+                dictionary.Add(new SweEngGloss(s, e));
             }
         }
     }
