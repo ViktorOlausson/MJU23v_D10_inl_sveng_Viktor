@@ -51,37 +51,45 @@ namespace MJU23v_D10_inl_sveng
         }
         public static void load(string defaultFile, string[] argument)
         {
-            if (argument.Length == 2)
+            try
             {
-                using (StreamReader sr = new StreamReader(argument[1]))//FIXME: kastar error om inte standard, pga ligger inte under debug, funkar om man skirver in en sökväg
+                if (argument.Length == 2)
                 {
-                    dictionary = new List<SweEngGloss>(); // Empty it!
-                    string line = sr.ReadLine();
-                    while (line != null)
+                    using (StreamReader sr = new StreamReader(argument[1]))//FIXME: kastar error om inte standard, pga ligger inte under debug, funkar om man skirver in en sökväg
                     {
-                        SweEngGloss gloss = new SweEngGloss(line);
-                        dictionary.Add(gloss);
-                        line = sr.ReadLine();
+                        dictionary = new List<SweEngGloss>(); // Empty it!
+                        string line = sr.ReadLine();
+                        while (line != null)
+                        {
+                            SweEngGloss gloss = new SweEngGloss(line);
+                            dictionary.Add(gloss);
+                            line = sr.ReadLine();
+                        }
                     }
+                    Console.WriteLine("Load successful!");
                 }
-                Console.WriteLine("Load successful!");
-            }
-            else if (argument.Length == 1)
+                else if (argument.Length == 1)
+                {
+                    using (StreamReader sr = new StreamReader(defaultFile))
+                    {
+                        dictionary = new List<SweEngGloss>(); // Empty it!
+                        string line = sr.ReadLine();
+                        while (line != null)
+                        {
+                            SweEngGloss gloss = new SweEngGloss(line);
+                            dictionary.Add(gloss);
+                            line = sr.ReadLine();
+                        }
+                    }
+                    Console.WriteLine("Load successful!");
+                }
+            }catch (FileNotFoundException ex)
             {
-                using (StreamReader sr = new StreamReader(defaultFile))
-                {
-                    dictionary = new List<SweEngGloss>(); // Empty it!
-                    string line = sr.ReadLine();
-                    while (line != null)
-                    {
-                        SweEngGloss gloss = new SweEngGloss(line);
-                        dictionary.Add(gloss);
-                        line = sr.ReadLine();
-                    }
-                }
-                Console.WriteLine("Load successful!");
+                Console.WriteLine("file could not be loaded, file not found");
             }
-        }
+            
+        
+    }
 
         public static void Delete(string[] argument)//TODO: skriva ut om Delete gick igenom
         {
