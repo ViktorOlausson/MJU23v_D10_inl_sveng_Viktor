@@ -27,7 +27,7 @@ namespace MJU23v_D10_inl_sveng
         {
             if (argument.Length == 2)
             {
-                string word = argument[1];
+                string word = argument[1].ToLower();
                 foreach (SweEngGloss gloss in dictionary)
                 {
                     if (gloss.word_swe == word)
@@ -39,7 +39,7 @@ namespace MJU23v_D10_inl_sveng
             else if (argument.Length == 1)
             {
                 Console.WriteLine("Write word to be translated: ");
-                string word = Console.ReadLine();
+                string word = Console.ReadLine().ToLower();
                 foreach (SweEngGloss gloss in dictionary)
                 {
                     if (gloss.word_swe == word)
@@ -83,7 +83,7 @@ namespace MJU23v_D10_inl_sveng
             }
         }
 
-        public static void Delete(string[] argument)
+        public static void Delete(string[] argument)//TODO: skriva ut om Delete gick igenom
         {
             if (argument.Length == 3)
             {
@@ -91,7 +91,7 @@ namespace MJU23v_D10_inl_sveng
                 for (int i = 0; i < dictionary.Count; i++)
                 {
                     SweEngGloss gloss = dictionary[i];
-                    if (gloss.word_swe == argument[1] && gloss.word_eng == argument[2])
+                    if (gloss.word_swe == argument[1].ToLower() && gloss.word_eng == argument[2].ToLower())
                         index = i;
                 }
                 dictionary.RemoveAt(index);
@@ -99,9 +99,9 @@ namespace MJU23v_D10_inl_sveng
             else if (argument.Length == 1)
             {
                 Console.WriteLine("Write word in Swedish: ");
-                string swedish = Console.ReadLine();
+                string swedish = Console.ReadLine().ToLower();
                 Console.Write("Write word in English: ");
-                string english = Console.ReadLine();
+                string english = Console.ReadLine().ToLower();
                 int index = -1;
                 for (int i = 0; i < dictionary.Count; i++)
                 {
@@ -117,14 +117,14 @@ namespace MJU23v_D10_inl_sveng
         {
             if (argument.Length == 3)
             {
-                dictionary.Add(new SweEngGloss(argument[1], argument[2]));
+                dictionary.Add(new SweEngGloss(argument[1].ToLower(), argument[2].ToLower()));
             }
             else if (argument.Length == 1)
             {
                 Console.WriteLine("Write word in Swedish: ");
-                string swedish = Console.ReadLine();
+                string swedish = Console.ReadLine().ToLower();
                 Console.Write("Write word in English: ");
-                string english = Console.ReadLine();
+                string english = Console.ReadLine().ToLower();
                 dictionary.Add(new SweEngGloss(swedish, english));
             }
         }

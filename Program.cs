@@ -12,31 +12,31 @@
                 Console.Write("> ");
                 string[] argument = Console.ReadLine().Split();
                 string command = argument[0];
-                if (command == "quit")
+                if (command.ToLower() == "quit")
                 {
-                    Console.WriteLine("Goodbye!");//FIXME: hoppar inte ut om input quit
+                    Console.WriteLine("Goodbye!");
                     return;
                 }
-                else if (command == "load")
+                else if (command.ToLower() == "load")
                 {
                     funktions.load(defaultFile, argument);
                 }
-                else if (command == "list")
+                else if (command.ToLower() == "list")
                 {
                     foreach(funktions.SweEngGloss gloss in funktions.dictionary)//FIXME: Kastar error om inget är laddat
                     {
                         Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
                     }
                 }
-                else if (command == "new")//TODO: lägga till save för att spara nya
+                else if (command.ToLower() == "new")//TODO: lägga till save för att spara nya
                 {
                     funktions.New(argument);
                 }
-                else if (command == "delete")//TODO: lägga till save för spara om något ändrats
+                else if (command.ToLower() == "delete")//TODO: lägga till save för spara om något ändrats
                 {
                     funktions.Delete(argument);
                 }
-                else if (command == "translate")//TODO: inget händer om ordet inte finns
+                else if (command.ToLower() == "translate")//TODO: inget händer om ordet inte finns
                 {
                     funktions.translate(argument);
                 }
