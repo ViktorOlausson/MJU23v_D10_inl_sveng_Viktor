@@ -53,7 +53,7 @@ namespace MJU23v_D10_inl_sveng
         {
             if (argument.Length == 2)
             {
-                using (StreamReader sr = new StreamReader(argument[1]))
+                using (StreamReader sr = new StreamReader(argument[1]))//FIXME: kastar error om inte standard, pga ligger inte under debug, funkar om man skirver in en sökväg
                 {
                     dictionary = new List<SweEngGloss>(); // Empty it!
                     string line = sr.ReadLine();
@@ -64,6 +64,7 @@ namespace MJU23v_D10_inl_sveng
                         line = sr.ReadLine();
                     }
                 }
+                Console.WriteLine("Load successful!");
             }
             else if (argument.Length == 1)
             {
@@ -78,6 +79,7 @@ namespace MJU23v_D10_inl_sveng
                         line = sr.ReadLine();
                     }
                 }
+                Console.WriteLine("Load successful!");
             }
         }
 

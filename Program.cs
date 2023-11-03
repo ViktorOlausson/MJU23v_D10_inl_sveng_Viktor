@@ -15,6 +15,7 @@
                 if (command == "quit")
                 {
                     Console.WriteLine("Goodbye!");//FIXME: hoppar inte ut om input quit
+                    return;
                 }
                 else if (command == "load")
                 {
