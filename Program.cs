@@ -16,7 +16,7 @@
                 this.word_swe = words[0]; this.word_eng = words[1];
             }
         }
-        static void Main(string[] args)
+        static void Main(string[] args) //TODO: help commando
         {
             string defaultFile = "..\\..\\..\\dict\\sweeng.lis";
             Console.WriteLine("Welcome to the dictionary app!");
@@ -27,7 +27,7 @@
                 string command = argument[0];
                 if (command == "quit")
                 {
-                    Console.WriteLine("Goodbye!");
+                    Console.WriteLine("Goodbye!");//FIXME: hoppar inte ut om input quit
                 }
                 else if (command == "load")
                 {
@@ -62,12 +62,12 @@
                 }
                 else if (command == "list")
                 {
-                    foreach(SweEngGloss gloss in dictionary)
+                    foreach(SweEngGloss gloss in dictionary)//FIXME: Kastar error om inget är laddat
                     {
                         Console.WriteLine($"{gloss.word_swe,-10}  - {gloss.word_eng,-10}");
                     }
                 }
-                else if (command == "new")
+                else if (command == "new")//TODO: lägga till save för att spara nya
                 {
                     if (argument.Length == 3)
                     {
@@ -82,7 +82,7 @@
                         dictionary.Add(new SweEngGloss(s, e));
                     }
                 }
-                else if (command == "delete")
+                else if (command == "delete")//TODO: lägga till save för spara om något ändrats
                 {
                     if (argument.Length == 3)
                     {
@@ -110,7 +110,7 @@
                         dictionary.RemoveAt(index);
                     }
                 }
-                else if (command == "translate")
+                else if (command == "translate")//TODO: inget händer om ordet inte
                 {
                     if (argument.Length == 2)
                     {
