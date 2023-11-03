@@ -5,6 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*if (!isLoaded)
+{
+    Console.WriteLine("No data has been loaded, please run load command first");
+}
+else
+{
+
+}*/
+
 namespace MJU23v_D10_inl_sveng
 {
     public class funktions
@@ -25,30 +34,40 @@ namespace MJU23v_D10_inl_sveng
         }
         public static void translate(string[] argument)
         {
-            if (argument.Length == 2)
+            if (!isLoaded)
             {
-                string word = argument[1].ToLower();
-                foreach (SweEngGloss gloss in dictionary)
+                Console.WriteLine("No data has been loaded, please run load command first");
+            }
+            else
+            {
+                if (argument.Length == 2)
                 {
-                    if (gloss.word_swe == word)
-                        Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
-                    if (gloss.word_eng == word)
-                        Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
+                    string word = argument[1].ToLower();
+                    foreach (SweEngGloss gloss in dictionary)
+                    {
+                        if (gloss.word_swe == word)
+                            Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
+                        if (gloss.word_eng == word)
+                            Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
+                    }
+                }
+                else if (argument.Length == 1)
+                {
+                    Console.WriteLine("Write word to be translated: ");
+                    string word = Console.ReadLine().ToLower();
+                    foreach (SweEngGloss gloss in dictionary)
+                    {
+                        if (gloss.word_swe == word)
+                            Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
+                        if (gloss.word_eng == word)
+                            Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
+                    }
                 }
             }
-            else if (argument.Length == 1)
-            {
-                Console.WriteLine("Write word to be translated: ");
-                string word = Console.ReadLine().ToLower();
-                foreach (SweEngGloss gloss in dictionary)
-                {
-                    if (gloss.word_swe == word)
-                        Console.WriteLine($"English for {gloss.word_swe} is {gloss.word_eng}");
-                    if (gloss.word_eng == word)
-                        Console.WriteLine($"Swedish for {gloss.word_eng} is {gloss.word_swe}");
-                }
-            }
+            
         }
+
+        static bool isLoaded = false;
         public static void load(string defaultFile, string[] argument)
         {
             try
@@ -67,6 +86,7 @@ namespace MJU23v_D10_inl_sveng
                         }
                     }
                     Console.WriteLine("Load successful!");
+                    isLoaded = true;
                 }
                 else if (argument.Length == 1)
                 {
@@ -82,30 +102,76 @@ namespace MJU23v_D10_inl_sveng
                         }
                     }
                     Console.WriteLine("Load successful!");
+                    isLoaded = true;
                 }
             }catch (FileNotFoundException ex)
             {
-                Console.WriteLine("file could not be loaded, file not found"); //TODO: skriva vilken fil som inte hittades och vart
+                Console.WriteLine($"file could not be loaded, file not found: {argument[1]}");
             }
             
         
     }
 
-        public static void Delete(string[] argument)//TODO: skriva ut om Delete gick igenom, ger ingen info när man bara skirver in ett ord
+        public static void Delete(string[] argument)
         {
-            try
+            if (!isLoaded)
+            {
+                Console.WriteLine("No data has been loaded, please run load command first");
+            }
+            else
+            {
+                try
+                {
+
+                    if (argument.Length == 3)
+                    {
+                        int index = -1;
+                        for (int i = 0; i < dictionary.Count; i++)
+                        {
+                            SweEngGloss gloss = dictionary[i];
+                            if (gloss.word_swe == argument[1].ToLower() && gloss.word_eng == argument[2].ToLower())
+                                index = i;
+                        }
+                        dictionary.RemoveAt(index);
+                        Console.WriteLine("Delete Successful");
+                    }
+                    else if (argument.Length == 1)
+                    {
+                        Console.WriteLine("Write word in Swedish: ");
+                        string swedish = Console.ReadLine().ToLower();
+                        Console.Write("Write word in English: ");
+                        string english = Console.ReadLine().ToLower();
+                        int index = -1;
+                        for (int i = 0; i < dictionary.Count; i++)//FIXME: Kastar error om inget är laddat
+                        {
+                            SweEngGloss gloss = dictionary[i];
+                            if (gloss.word_swe == swedish && gloss.word_eng == english)
+                                index = i;
+                        }
+                        dictionary.RemoveAt(index);
+                        Console.WriteLine("Delete Successful");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Unabele to delete");
+                }
+            }
+            
+            
+        }
+
+        public static void New(string[] argument)
+        {
+            if (!isLoaded)
+            {
+                Console.WriteLine("No data has been loaded, please run load command first");
+            }
+            else
             {
                 if (argument.Length == 3)
                 {
-                    int index = -1;
-                    for (int i = 0; i < dictionary.Count; i++)
-                    {
-                        SweEngGloss gloss = dictionary[i];
-                        if (gloss.word_swe == argument[1].ToLower() && gloss.word_eng == argument[2].ToLower())
-                            index = i;
-                    }
-                    dictionary.RemoveAt(index);
-                    Console.WriteLine("Delete Successful");
+                    dictionary.Add(new SweEngGloss(argument[1].ToLower(), argument[2].ToLower()));
                 }
                 else if (argument.Length == 1)
                 {
@@ -113,37 +179,10 @@ namespace MJU23v_D10_inl_sveng
                     string swedish = Console.ReadLine().ToLower();
                     Console.Write("Write word in English: ");
                     string english = Console.ReadLine().ToLower();
-                    int index = -1;
-                    for (int i = 0; i < dictionary.Count; i++)//FIXME: Kastar error om inget är laddat
-                    {
-                        SweEngGloss gloss = dictionary[i];
-                        if (gloss.word_swe == swedish && gloss.word_eng == english)
-                            index = i;
-                    }
-                    dictionary.RemoveAt(index);
-                    Console.WriteLine("Delete Successful");
+                    dictionary.Add(new SweEngGloss(swedish, english));//FIXME: kastar error om inget är laddat
                 }
-            } catch (Exception ex)
-            {
-                Console.WriteLine("Unabele to delete");
             }
             
-        }
-
-        public static void New(string[] argument)
-        {
-            if (argument.Length == 3)
-            {
-                dictionary.Add(new SweEngGloss(argument[1].ToLower(), argument[2].ToLower()));
-            }
-            else if (argument.Length == 1)
-            {
-                Console.WriteLine("Write word in Swedish: ");
-                string swedish = Console.ReadLine().ToLower();
-                Console.Write("Write word in English: ");
-                string english = Console.ReadLine().ToLower();
-                dictionary.Add(new SweEngGloss(swedish, english));
-            }
         }
     }
 }
