@@ -55,7 +55,7 @@ namespace MJU23v_D10_inl_sveng
             {
                 if (argument.Length == 2)
                 {
-                    using (StreamReader sr = new StreamReader(argument[1]))//FIXME: kastar error om inte standard, pga ligger inte under debug, funkar om man skirver in en sökväg
+                    using (StreamReader sr = new StreamReader(argument[1]))//TODO: fixa så att allt lässes från dict
                     {
                         dictionary = new List<SweEngGloss>(); // Empty it!
                         string line = sr.ReadLine();
@@ -85,40 +85,49 @@ namespace MJU23v_D10_inl_sveng
                 }
             }catch (FileNotFoundException ex)
             {
-                Console.WriteLine("file could not be loaded, file not found");
+                Console.WriteLine("file could not be loaded, file not found"); //TODO: skriva vilken fil som inte hittades och vart
             }
             
         
     }
 
-        public static void Delete(string[] argument)//TODO: skriva ut om Delete gick igenom
+        public static void Delete(string[] argument)//TODO: skriva ut om Delete gick igenom, ger ingen info när man bara skirver in ett ord
         {
-            if (argument.Length == 3)
+            try
             {
-                int index = -1;
-                for (int i = 0; i < dictionary.Count; i++)
+                if (argument.Length == 3)
                 {
-                    SweEngGloss gloss = dictionary[i];
-                    if (gloss.word_swe == argument[1].ToLower() && gloss.word_eng == argument[2].ToLower())
-                        index = i;
+                    int index = -1;
+                    for (int i = 0; i < dictionary.Count; i++)
+                    {
+                        SweEngGloss gloss = dictionary[i];
+                        if (gloss.word_swe == argument[1].ToLower() && gloss.word_eng == argument[2].ToLower())
+                            index = i;
+                    }
+                    dictionary.RemoveAt(index);
+                    Console.WriteLine("Delete Successful");
                 }
-                dictionary.RemoveAt(index);
-            }
-            else if (argument.Length == 1)
+                else if (argument.Length == 1)
+                {
+                    Console.WriteLine("Write word in Swedish: ");
+                    string swedish = Console.ReadLine().ToLower();
+                    Console.Write("Write word in English: ");
+                    string english = Console.ReadLine().ToLower();
+                    int index = -1;
+                    for (int i = 0; i < dictionary.Count; i++)//FIXME: Kastar error om inget är laddat
+                    {
+                        SweEngGloss gloss = dictionary[i];
+                        if (gloss.word_swe == swedish && gloss.word_eng == english)
+                            index = i;
+                    }
+                    dictionary.RemoveAt(index);
+                    Console.WriteLine("Delete Successful");
+                }
+            } catch (Exception ex)
             {
-                Console.WriteLine("Write word in Swedish: ");
-                string swedish = Console.ReadLine().ToLower();
-                Console.Write("Write word in English: ");
-                string english = Console.ReadLine().ToLower();
-                int index = -1;
-                for (int i = 0; i < dictionary.Count; i++)
-                {
-                    SweEngGloss gloss = dictionary[i];
-                    if (gloss.word_swe == swedish && gloss.word_eng == english)
-                        index = i;
-                }
-                dictionary.RemoveAt(index);//FIXME: kastar error om fel stavning
+                Console.WriteLine("Unabele to delete");
             }
+            
         }
 
         public static void New(string[] argument)
